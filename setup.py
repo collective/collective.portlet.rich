@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.5'
+version = '0.4'
 
 setup(name='collective.portlet.rich',
       version=version,
