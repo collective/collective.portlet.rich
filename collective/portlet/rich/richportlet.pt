@@ -1,0 +1,85 @@
+<div tal:condition="view/data/omit_border"
+     tal:attributes="class string:portletRich ${view/css_class}"
+     tal:content="structure view/data/text" />
+<dl tal:condition="not:view/data/omit_border"
+    tal:attributes="class string:portlet portletRich ${view/css_class}"
+    i18n:domain="plone.portlet.static">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <img tal:replace="structure view/get_title_image_tag" />
+        <span>
+           <a tal:omit-tag="not:view/has_title_link"
+              tal:attributes="href view/data/title_more_url"
+              tal:content="view/data/title"
+              />
+        </span>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <dd class="portletItem odd">
+    <tal:comment tal:condition="nothing">
+        TODO:check up upon this block elements might not be valid inside d / dt / dd tag(s)
+    </tal:comment>        
+        <div tal:replace="structure view/data/text"
+             tal:condition="view/has_text"/>
+
+
+    <tal:comment tal:condition="nothing">
+        TODO:set up support of 
+        class view/cssclass;
+        
+        clear out visualIcon / visualIconPadding - support preventing ie6 blinking
+        though this perhaps has been nicer to have implemented a generel js plone fx.
+        
+        clear out the "|" combined with lists this might not really be a good approach
+        
+    </tal:comment>
+    <tal:links
+        tal:define="results view/get_links;
+                    css view/data/links_css|nothing;
+                    links_list_row python:css == 'links_list_row';
+                    links_list_description python:css == 'links_list_description';"
+        tal:condition="results">
+        <ul class="visualNoMarker"
+            tal:attributes="class string:visualNoMarker ${css}RichPortlet">
+            <li tal:repeat="item results"
+                ><tal:def_item tal:define="end repeat/item/end"><span class="visualIcon"><a href=""
+                    class="visualIconPadding"
+                    tal:attributes="href item/url;
+                                    title item/description;"
+                    ><span tal:replace="item/title">Title</span><span class="links_list_descriptionDescription"
+                                tal:content="item/description"
+                                tal:condition="links_list_description"
+                            >Description</span></a></span><span class="links_list_rowSeparator" tal:condition="python:links_list_row and not end">|</span></tal:def_item></li>
+        </ul>
+        <tal:comment tal:condition="nothing"> we need a visual clear when links floats </tal:comment>
+        <span class="visualClear"
+              tal:condition="links_list_row"><!-- --></span>
+    </tal:links>
+
+
+
+
+
+
+
+
+
+        <tal:corners condition="not:view/has_footer">
+            <span class="portletBottomLeft"></span>
+            <span class="portletBottomRight"></span>
+        </tal:corners>
+    </dd>
+    <dd class="portletFooter" tal:condition="view/has_footer">
+        <span class="portletBotomLeft"></span>
+        <span>
+           <a tal:omit-tag="not:view/has_footer_link"
+              tal:attributes="href view/data/footer_more_url"
+              tal:content="view/data/footer"
+              />
+        </span>
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>

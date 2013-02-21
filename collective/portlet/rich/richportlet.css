@@ -1,0 +1,34 @@
+/* Additional stylesheet for the Rich Portlet */
+
+
+/* links_list */
+
+.links_listRichPortlet {}
+
+
+/* links_list_description */
+
+.links_list_descriptionRichPortlet {}
+
+.links_list_descriptionDescription {
+    display: block;
+}
+.links_list_descriptionDescription a {
+    color: #000;
+}
+
+/* links_list_row */
+.links_list_rowRichPortlet li {
+    float: left;
+}
+.links_list_rowSeparator {
+    margin: 0 0.2em;
+    color: #000;
+}
+
+
+/* quick fix for providing some top padding for the header image */
+.portletRich .portletHeader img {
+    margin-top: 0.5em;
+    display: block;
+}

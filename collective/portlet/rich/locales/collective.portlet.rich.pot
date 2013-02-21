@@ -1,0 +1,115 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2009-04-16 11:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.portlet.rich\n"
+
+#: ./richportlet.py:223
+msgid "Add Rich Portlet"
+msgstr ""
+
+#: ./richportlet.py:64
+msgid "Choose a css style for the links list."
+msgstr ""
+
+#: ./richportlet.py:239
+msgid "Edit Rich Portlet"
+msgstr ""
+
+#: ./richportlet.py:33
+msgid "Find the image"
+msgstr ""
+
+#: ./richportlet.py:83
+msgid "If given, the footer will link to this URL."
+msgstr ""
+
+#: ./richportlet.py:44
+msgid "If given, the title will link to this URL."
+msgstr ""
+
+#: ./richportlet.py:54
+msgid "Links"
+msgstr ""
+
+#: ./vocabularies.py:14
+msgid "Links in a row"
+msgstr ""
+
+#: ./vocabularies.py:12
+msgid "Links list"
+msgstr ""
+
+#: ./vocabularies.py:13
+msgid "Links list with description"
+msgstr ""
+
+#: ./richportlet.py:63
+msgid "Links styles"
+msgstr ""
+
+#: ./richportlet.py:70
+msgid "Omit portlet border"
+msgstr ""
+
+#: ./richportlet.py:77
+msgid "Portlet footer"
+msgstr ""
+
+#: ./richportlet.py:82
+msgid "Portlet footer details link"
+msgstr ""
+
+#: ./richportlet.py:38
+msgid "Portlet title"
+msgstr ""
+
+#: ./richportlet.py:43
+msgid "Portlet title details link"
+msgstr ""
+
+#: ./richportlet.py:32
+msgid "Portlet title image"
+msgstr ""
+
+#: ./richportlet.py:49
+msgid "Text"
+msgstr ""
+
+#: ./richportlet.py:78
+msgid "Text to be shown in the footer"
+msgstr ""
+
+#: ./richportlet.py:50
+msgid "The portlet body text."
+msgstr ""
+
+#: ./richportlet.py:224
+msgid "This portlet ..."
+msgstr ""
+
+#: ./richportlet.py:71
+msgid "Tick this box if you want to render the text above without the standard header, border or footer."
+msgstr ""
+
+#: ./richportlet.py:39
+msgid "Title of the rendered portlet"
+msgstr ""
+
+#: ./richportlet.py:55
+msgid "Write links on the form "<title>":<path or uri>:"<description".Title and description are both optional (but required for WCAG accessibility compliance)."
+msgstr ""
+

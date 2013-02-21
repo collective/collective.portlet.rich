@@ -1,0 +1,115 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: collective.portlet.rich 0.3\n"
+"POT-Creation-Date: 2009-04-16 11:38+0000\n"
+"PO-Revision-Date: 2009-04-16 13:53+0200\n"
+"Last-Translator: Thomas Clement Mogensen <thomas@headnet.dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: da\n"
+"Language-Name: Danish\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.portlet.rich\n"
+
+#: ./richportlet.py:223
+msgid "Add Rich Portlet"
+msgstr "Tilføj Rich Portlet"
+
+#: ./richportlet.py:64
+msgid "Choose a css style for the links list."
+msgstr "Vælg en visningsstil til listen af links."
+
+#: ./richportlet.py:239
+msgid "Edit Rich Portlet"
+msgstr "Rediger Rich Portlet"
+
+#: ./richportlet.py:33
+msgid "Find the image"
+msgstr "Find et billede"
+
+#: ./richportlet.py:83
+msgid "If given, the footer will link to this URL."
+msgstr "Hvis angivet vil der optråde et link til denne url nederst i portletten."
+
+#: ./richportlet.py:44
+msgid "If given, the title will link to this URL."
+msgstr "Hvis angivet bliver dette titlen på linket nederst i portletten."
+
+#: ./richportlet.py:54
+msgid "Links"
+msgstr "Links"
+
+#: ./vocabularies.py:14
+msgid "Links in a row"
+msgstr "Links på række"
+
+#: ./vocabularies.py:12
+msgid "Links list"
+msgstr "Links som en liste"
+
+#: ./vocabularies.py:13
+msgid "Links list with description"
+msgstr "Links som liste med beskrivelser"
+
+#: ./richportlet.py:63
+msgid "Links styles"
+msgstr "Linkvisningsstil"
+
+#: ./richportlet.py:70
+msgid "Omit portlet border"
+msgstr "Vis ikke portletkant"
+
+#: ./richportlet.py:77
+msgid "Portlet footer"
+msgstr "Portletbund"
+
+#: ./richportlet.py:82
+msgid "Portlet footer details link"
+msgstr "Link i portletbund"
+
+#: ./richportlet.py:38
+msgid "Portlet title"
+msgstr "Portlettitel"
+
+#: ./richportlet.py:43
+msgid "Portlet title details link"
+msgstr "Link i portlettitel"
+
+#: ./richportlet.py:32
+msgid "Portlet title image"
+msgstr "Billede til portlettitel"
+
+#: ./richportlet.py:49
+msgid "Text"
+msgstr "Tekst"
+
+#: ./richportlet.py:78
+msgid "Text to be shown in the footer"
+msgstr "Tekst der vises i bunden af portletten"
+
+#: ./richportlet.py:50
+msgid "The portlet body text."
+msgstr "Portlettens brødtekst"
+
+#: ./richportlet.py:224
+msgid "This portlet ..."
+msgstr "Denne portlet ..."
+
+#: ./richportlet.py:71
+msgid "Tick this box if you want to render the text above without the standard header, border or footer."
+msgstr "Vælges denne mulighed vises portlettens brødtekst uden overskrift, bund og kant."
+
+#: ./richportlet.py:39
+msgid "Title of the rendered portlet"
+msgstr "Portlettens titel"
+
+#: ./richportlet.py:55
+msgid "Write links on the form \"<title>\":<path or uri>:\"<description\".Title and description are both optional (but required for WCAG accessibility compliance)."
+msgstr "Skriv links på formen \"<titel>\":<sti eller uri>:\"<beskrivelse>\". Både titel og beskrivelse er valgfri (men kræves for at opfylde WCAG's krav til tilgængelighed)."
+

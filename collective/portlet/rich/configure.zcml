@@ -1,0 +1,47 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:five="http://namespaces.zope.org/five"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+   xmlns:plone="http://namespaces.plone.org/plone"
+   xmlns:i18n="http://namespaces.zope.org/i18n"
+   i18n_domain="collective.portlet.rich">
+
+  <five:registerPackage package="." />
+  <i18n:registerTranslations directory="locales" />
+  
+  <genericsetup:registerProfile
+     name="default"
+     title="Rich portlet"
+     directory="profiles/default"
+     description=""
+       provides="Products.GenericSetup.interfaces.EXTENSION"
+     />
+  
+  <!-- Register the portlet -->
+  
+  <plone:portlet
+     name="collective.portlet.rich.RichPortlet"
+     interface=".richportlet.IRichPortlet"
+     assignment=".richportlet.Assignment"
+     view_permission="zope2.View"
+     edit_permission="cmf.ManagePortal"
+     renderer=".richportlet.Renderer"
+     addview=".richportlet.AddForm"
+     editview=".richportlet.EditForm"
+     />
+  
+  <!-- Register the vocabularies -->
+  <utility
+     component=".vocabularies.LinksCSSVocabulary"
+     name="collective.portlet.rich.vocabularies.LinksCSSVocabulary" 
+     />
+
+  <browser:resource
+     name="richportlet.css"
+     file="richportlet.css"
+     />
+  
+  <include package="collective.formlib.link" />
+  
+</configure>

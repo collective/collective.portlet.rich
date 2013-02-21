@@ -1,0 +1,137 @@
+Rich Portlet
+-----------------------
+
+First, some set-up.
+
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> portal_url = self.portal.absolute_url()
+    
+    >>> browser.handleErrors = False
+    >>> self.portal.error_log._ignored_exceptions = ()
+    
+We will log authorize as the portal owner. 
+    
+    >>> from Testing.ZopeTestCase import user_password
+    >>> browser.addHeader('Authorization',
+    ...                   'Basic %s:%s' % ('portal_owner', user_password))
+
+Lets start at the front page.
+
+    >>> browser.open(portal_url)
+
+Lets go into the portlet administration.
+
+    >>> browser.getLink('Manage portlets').click()
+
+Add rich portlet from the selection list. This is a bit tricky since we have
+multiple forms at the page and the naming of the forms are a bit odd or just missing. 
+    
+    >>> form = browser.getForm(index=3)
+    >>> unicode(form.action)
+    u'http://nohost/plone'
+
+Get the rich portlet from the selection list.
+
+    >>> ctrl = form.getControl('Rich portlet')
+    >>> ctrl
+    <ItemControl name=':action' type='select' optionValue='/++contextportlets++plone.rightcolumn/+/collective.portlet.rich.RichPortlet' selected=False>
+
+Lets choice it.
+
+    >>> ctrl.selected = True
+    >>> ctrl.selected
+    True
+
+Submit the form. If no submit button is provided then its possible to submit 
+the form like this: form.submit()
+
+    >>> form.submit('Add portlet')
+
+We should be at the add form now. *browser.url* isn't really nice for this check since
+it don't gets the whole part of the add portlet url.
+
+    >>> browser.url
+    'http://nohost/plone'
+
+Lets check for the title of the add form instead.
+
+    >>> '<h1 class="documentFirstHeading">Add Rich Portlet</h1>' in browser.contents
+    True
+
+Add various data for the (rich) portlet
+---------------------------------------
+
+Prepare for adding two links. This is required since the *List* widget requires page reload
+and is empty when portlet is added.
+
+    >>> browser.getControl(name='form.links.add').click()
+    >>> browser.getControl(name='form.links.add').click()
+
+Now it should be possible to fill out the various fields. For the vocabulary in form.links_css its the token
+that should be specified as the value.
+
+    >>> browser.getControl(name='form.title').value = "Rich portlet title"
+    >>> browser.getControl(name='form.title_more_url').value = "http://www.plone.org"
+    >>> browser.getControl(name='form.text').value = "Rich portlet text"
+    >>> browser.getControl(name='form.links.0.').value = \
+    ...     u'"Link title 1":http://www.python.org:"Link description 1 - this is an external link"'
+    >>> browser.getControl(name='form.links.1.').value = \
+    ...     u'"Link title 2":/news:"Link description 2 - this is an internal link"'
+
+The links css style selection list is a bit more special to fill out. As always the test browser 
+documentation is your friend: http://pypi.python.org/pypi/zc.testbrowser/1.0a1
+
+    >>> ctrl = browser.getControl('Links list with description')
+    >>> ctrl
+    <ItemControl name='form.links_css' type='select' optionValue='links_list_description' selected=False>
+    
+Lets choice it.    
+    >>> ctrl.selected = True
+    >>> ctrl.selected
+    True
+
+Fill out the rest of the portlet add form.
+    
+    >>> browser.getControl(name='form.footer').value = 'Rich portlet footer'
+    >>> browser.getControl(name='form.footer_more_url').value = 'http://www.python.org'
+    >>> browser.getControl(name='form.actions.save').click()
+    
+We're back at the portlet management now.
+
+    >>> browser.url
+    'http://nohost/plone/@@manage-portlets'
+  
+Lets have a look at the rendering of the portlet.
+
+    >>> browser.open(portal_url)
+
+Confirm that no error was issued.
+
+    >>> 'There was an error while rendering the portlet.' in browser.contents
+    False
+
+Confirm rendering.
+
+    >>> "Rich portlet title" in browser.contents
+    True
+    
+    >>> '<a href="http://www.plone.org">Rich portlet title</a>' in browser.contents
+    True
+
+    >>> "Rich portlet text" in browser.contents
+    True
+
+Is the richportlet.css by the way there. Since the cache setting is enabled the naming is a bit different.
+    
+    >>> browser.contents
+    '...<style type="text/css" media="screen"><!-- @import url(http://nohost/plone/portal_css/Plone%20Default/resourcerichportlet-...css); --></style>...'
+
+And is the css callable on the portal ?
+
+    >>> css = "%s/%s" % (portal_url, '++resource++richportlet.css')
+    >>> browser.open(css)
+    >>> browser.contents
+    '.../* Additional stylesheet for the Rich Portlet */...'
+    
+    
