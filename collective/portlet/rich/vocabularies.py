@@ -9,6 +9,8 @@ from Products.CMFCore.utils import getToolByName
 
 from collective.portlet.rich import RichPortletMessageFactory as _
 
+from plone.app.imaging.utils import getAllowedSizes
+
 # Each vocabulary term should e understood like this:
 # value | token (only used in the form) | title (unicode)
 LINKS_CSS_STYLES = (
@@ -27,3 +29,19 @@ class LinksCSSVocabulary(object):
         return SimpleVocabulary(items)
 
 LinksCSSVocabulary = LinksCSSVocabulary()
+
+class ImageScalesVocabulary(object):
+    implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        results = []
+        sizes = getAllowedSizes()
+
+        for (size, dimentions) in sizes.items():
+            results.append(
+                SimpleTerm(size, size)
+            )
+
+        return SimpleVocabulary(results)
+
+ImageScalesVocabulary = ImageScalesVocabulary()

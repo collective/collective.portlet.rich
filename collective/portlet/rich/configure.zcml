@@ -37,6 +37,11 @@
      name="collective.portlet.rich.vocabularies.LinksCSSVocabulary" 
      />
 
+  <utility
+     component=".vocabularies.ImageScalesVocabulary"
+     name="collective.portlet.rich.vocabularies.ImageScalesVocabulary" 
+     />
+
   <browser:resource
      name="richportlet.css"
      file="richportlet.css"

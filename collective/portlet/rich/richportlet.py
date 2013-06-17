@@ -1,33 +1,28 @@
-import re
-
-from plone.app.form.widgets.wysiwygwidget import WYSIWYGWidget
-from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
-from plone.app.portlets.portlets import base
-from plone.app.vocabularies.catalog import SearchableTextSourceBinder
-from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.portlets.interfaces import IPortletDataProvider
-
-from zope import schema
-from zope.component import getUtility, getMultiAdapter
-from zope.formlib import form
-from zope.interface import implements
-
-from Products.ATContentTypes.interface import IATImage
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-try:
-    from Products.Five.formlib import formbase
-except ImportError:
-    from five.formlib import formbase
-
-from collective.portlet.rich import RichPortletMessageFactory as _
 from collective.formlib.link.field import Link
 from collective.formlib.link.interfaces import ILink
-try:
-    from plone.namedfile.interfaces import IImageScaleTraversable
-    provides = [IATImage.__identifier__, IImageScaleTraversable.__identifier__]
-except ImportError:
-    IImageScaleTraversable = None
-    provides = IATImage.__identifier__
+from collective.portlet.rich import RichPortletMessageFactory as _
+from plone.app.portlets.browser import z3cformhelper
+from plone.app.portlets.portlets import base
+from plone.app.textfield import RichText
+from plone.formwidget.contenttree import ObjPathSourceBinder
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.namedfile.interfaces import IImageScaleTraversable
+from plone.portlets.interfaces import IPortletDataProvider
+from z3c.form import field
+from z3c.relationfield.schema import RelationChoice
+from zope import schema
+from zope.component import getUtility, getMultiAdapter
+from zope.interface import implements
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+
+
+background_placement = SimpleVocabulary([
+    SimpleTerm(value='top left', title=_(u"Top left")),
+    SimpleTerm(value='top right', title=_(u"Top right")),
+    SimpleTerm(value='bottom left', title=_(u"Bottom left")),
+    SimpleTerm(value='bottom right', title=_(u"Bottom right")),
+])
 
 
 class IRichPortlet(IPortletDataProvider):
@@ -38,92 +33,126 @@ class IRichPortlet(IPortletDataProvider):
     same.
     """
 
-    target_title_image = schema.Choice(
+    target_title_image = RelationChoice(
         title=_(u"Portlet title image"),
         description=_(u"Find the image"),
         required=False,
-        source=SearchableTextSourceBinder({'object_provides' : provides}))
-    
-    scale = schema.TextLine(
-        title=_(u"Image scale"),
-        description=_(u"Scale of the selected image. "
-                       "Make sure entered image scale exists."),
+        source=ObjPathSourceBinder(
+            portal_type=['Image']
+        ),
+    )
+
+    title_image_scale = schema.Choice(
+        title=_(u"Portlet title image scale"),
+        description=_(u"Choose the image scale."),
         required=False,
-        default=u"mini")
-    
+        vocabulary='collective.portlet.rich.vocabularies.ImageScalesVocabulary',
+    )
+
+    title_image_background = schema.Bool(
+        title=_(u"Title image is background?"),
+        required=False
+    )
+
+    title_image_background_placement = schema.Choice(
+        title=_(u"Background placement"),
+        required=False,
+        vocabulary=background_placement
+    )
+
     title = schema.TextLine(
         title=_(u"Portlet title"),
         description=_(u"Title of the rendered portlet"),
-        required=True)
+        required=True
+    )
 
     title_more_url = schema.ASCIILine(
         title=_(u"Portlet title details link"),
         description=_(u"If given, the title "
                       "will link to this URL."),
-        required=False)
+        required=False
+    )
 
-    text = schema.Text(
+    text = RichText(
         title=_(u"Text"),
         description=_(u"The portlet body text."),
-        required=False)
+        required=False
+    )
 
     links = schema.List(
         title=_(u"Links"),
-        description=_(u"Write links on the form \"<title>\":<path or uri>:\"<description\"."+
+        description=_(u"Write links on the form \"title\":\"path or uri\":\"description\". "+
                       u"Title and description are both optional (but required for WCAG "+
                       u"accessibility compliance)."),
         required=False,
-        value_type = Link(),
+        value_type=Link(),
     )
-    
+
     links_css = schema.Choice(
         title=_(u"Links styles"),
         description=_(u"Choose a css style for the links list."),
         required=True,
         vocabulary='collective.portlet.rich.vocabularies.LinksCSSVocabulary',
-        )
-    
+    )
+
     omit_border = schema.Bool(
         title=_(u"Omit portlet border"),
         description=_(u"Tick this box if you want to render the text above without the "
                       "standard header, border or footer."),
         required=True,
-        default=False)
-    
+        default=False
+    )
+
     footer = schema.TextLine(
         title=_(u"Portlet footer"),
         description=_(u"Text to be shown in the footer"),
-        required=False)
+        required=False
+    )
 
     footer_more_url = schema.ASCIILine(
         title=_(u"Portlet footer details link"),
         description=_(u"If given, the footer will link to this URL."),
-        required=False)
+        required=False
+    )
+
+
+IRichPortlet.setTaggedValue(
+    u'plone.formwidget.contenttree.startuppath', 'context'
+)
+
 
 class Assignment(base.Assignment):
     """Portlet assignment.
-    
+
     This is what is actually managed through the portlets UI and associated
     with columns.
     """
-    
+
     implements(IRichPortlet)
 
     # backwards compatibility
+    title_image_scale = ''
+    title_image_background = False
+    title_image_background_placement = None
     target_title_image = None
     title_more_url = None
     title = u"Rich portlet"
-    scale = u"mini"
-    
-    def __init__(self, target_title_image=None, title=u"",
-                 title_more_url='', text=u"", links = (),
-                 links_css = 'links_list', omit_border=False,
-                 footer=u"", footer_more_url='',
-                 header=None, target_header_image=None, header_more_url=None,
-                 scale=u"mini"):
+
+    def __init__(
+        self, target_title_image=None, title_image_background=False,
+        title_image_scale='',
+        title_image_background_placement=None, title=u"",
+        title_more_url='', text=u"", links=(),
+        links_css = 'links_list', omit_border=False,
+        footer=u"", footer_more_url='',
+        header=None, target_header_image=None, header_more_url=None
+    ):
         """Initialize all variables."""
-        
+
         self.target_title_image = target_title_image
+        self.title_image_scale = ''
+        self.title_image_background = title_image_background
+        self.title_image_background_placement = title_image_background_placement
         self.title = title or Assignment.title
         self.title_more_url = title_more_url
         self.text = text
@@ -132,7 +161,6 @@ class Assignment(base.Assignment):
         self.omit_border = omit_border
         self.footer = footer
         self.footer_more_url = footer_more_url
-        self.scale = scale
 
         # backwards compatibility
         if header is not None:
@@ -144,52 +172,60 @@ class Assignment(base.Assignment):
         if header_more_url is not None:
             self.title_more_url = header_more_url
 
+
 class Renderer(base.Renderer):
     """Portlet renderer.
-    
+
     This is registered in configure.zcml. The referenced page template is
     rendered, and the implicit variable 'view' will refer to an instance
     of this class. Other methods can be added and referenced in the template.
     """
 
     render = ViewPageTemplateFile('richportlet.pt')
-    
-    # also taken from collection portlet 
+
+    #also taken from collection portlet
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
-        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
+        portal_state = getMultiAdapter((self.context, self.request),
+                                       name=u'plone_portal_state')
         self.portal_url = portal_state.portal_url()
-        self.portal = portal_state.portal()        
-        
+        self.portal = portal_state.portal()
+
     def css_class(self):
         """Generate a CSS class from the portlet title
         """
         title = self.data.title
         normalizer = getUtility(IIDNormalizer)
         return "portlet-richportlet-%s" % normalizer.normalize(title)
-    
+
     def has_title_link(self):
         return bool(self.data.title_more_url)
 
     def has_text(self):
-        """Is the text field really empty ? kupu do some times leave som
-            markup behind the scene - so lets get the text 
-           striped for markup and white spaces before and after the text
-           this approach requires a regular expression. 
-           
-           TODO: clear out -- is this a sane approach ? is a reg expression expensive due to performance ?
-        """
-        text = self.data.text
-        return text and len(re.sub('<(?!(?:a\s|/a|!))[^>]*>','',text).replace("\n", "").strip())
-    
+        return bool(self.data.text)
+
     def has_footer_link(self):
         return bool(self.data.footer_more_url)
 
     def has_footer(self):
         return bool(self.data.footer)
 
+    def has_title_image(self):
+        return bool(self.data.target_title_image)
+
+    def image_is_background(self):
+        return bool(self.data.title_image_background)
+
+    def get_text(self):
+        return self.data.text
+
+    def get_placement(self):
+        return self.data.title_image_background_placement
+
     def get_links(self):
         """Return a list of links as dictionaries."""
+        if not self.data.links:
+            return []
 
         # filter for backwards compatibility
         links = filter(ILink.providedBy, self.data.links)
@@ -201,70 +237,77 @@ class Renderer(base.Renderer):
 
     def get_title_image_tag(self):
         """Generate image tag.
-        
+
         Note: ``target_title_image`` uses the uberselection-widget
         and does not return an object (unlike Archetypes reference
         fields).
         """
-        
-        image_path = self.data.target_title_image
-        
-        
-        # it feels insane that i need to do manual strippping of the first slash in this string.
-        # I must be doing something wrong
-        # please make this bit more sane
-        
-        if image_path is None or len(image_path)==0:
+
+        if self.image_is_background():
             return None
-        # The portal root is never a image
-        
-        if image_path[0]=='/':
-            image_path = image_path[1:]
-        image = self.portal.restrictedTraverse(image_path, default=None)
-        
-        # we should also check that the returned object implements the interfaces for image
-        # So that we don't accidentally return folders and stuff that will make things break
-        scale = self.data.scale or u"mini"
-        scale = scale.encode('ascii', 'replace')
+
+        ref = self.data.target_title_image
+        if ref is None:
+            return
+
+        image = ref.to_object
+
         if IImageScaleTraversable and IImageScaleTraversable.providedBy(image):
             try:
                 view = image.restrictedTraverse('@@images')
                 view = view.__of__(image)
-                return view.tag('image', scale=scale)
+                return view.tag('image', scale=self.data.title_image_scale)
             except:
-                return None
-        elif IATImage.providedBy(image) and image.getImage() is not None:
-            return image.tag(scale=scale)
-        else:
-            return None
+                pass
 
-class AddForm(base.AddForm):
+    def get_background_image_url(self):
+        ref = self.data.target_title_image
+        if ref is None:
+            return
+
+        image = ref.to_object
+
+        if IImageScaleTraversable and IImageScaleTraversable.providedBy(image):
+            try:
+                view = image.restrictedTraverse('@@images')
+                view = view.__of__(image)
+                return view.scale('image', scale=self.data.title_image_scale).url
+            except:
+                return ''
+
+    def get_div_style(self):
+        result = {}
+        if self.image_is_background():
+            result['background'] = "url('" + self.get_background_image_url() + "') no-repeat"
+
+        return '; '.join([k + ': ' + v for (k, v) in result.items()])
+
+
+class AddForm(z3cformhelper.AddForm):
     """Portlet add form.
-    
+
     This is registered in configure.zcml. The form_fields variable tells
     zope.formlib which fields to display. The create() method actually
     constructs the assignment that is being added.
     """
-    form_fields = form.Fields(IRichPortlet)
-    form_fields['text'].custom_widget = WYSIWYGWidget
-    form_fields['target_title_image'].custom_widget = UberSelectionWidget
-    
+
     label = _(u"Add Rich Portlet")
     description = _(u"This portlet ...")
+
+    fields = field.Fields(IRichPortlet)
 
     def create(self, data):
         return Assignment(**data)
 
-class EditForm(base.EditForm):
+
+class EditForm(z3cformhelper.EditForm):
     """Portlet edit form.
-    
+
     This is registered with configure.zcml. The form_fields variable tells
     zope.formlib which fields to display.
     """
-    form_fields = form.Fields(IRichPortlet)
-    form_fields['text'].custom_widget = WYSIWYGWidget
-    form_fields['target_title_image'].custom_widget = UberSelectionWidget
-    
+
     label = _(u"Edit Rich Portlet")
     description = _(u"This portlet ...")
-    
+
+    fields = field.Fields(IRichPortlet)

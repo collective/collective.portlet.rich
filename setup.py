@@ -28,7 +28,6 @@ setup(name='collective.portlet.rich',
       #TODO: set up a dependecy of the special plone.app.form branch that supports kupu/wysiwyg
       install_requires=[
           'setuptools',
-          'collective.formlib.link',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]
