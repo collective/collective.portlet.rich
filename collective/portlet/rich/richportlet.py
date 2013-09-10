@@ -256,7 +256,7 @@ class Renderer(base.Renderer):
             try:
                 view = image.restrictedTraverse('@@images')
                 view = view.__of__(image)
-                return view.tag('image', scale=self.data.title_image_scale)
+                return view.tag('image', scale=self.data.title_image_scale, title=self.data.title, alt=self.data.title)
             except:
                 pass
 
