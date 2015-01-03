@@ -41,8 +41,9 @@ setup(
     zip_safe=False,
     #TODO: set up a dependecy of the special plone.app.form branch that supports kupu/wysiwyg
     install_requires=[
-        'setuptools',
+        'Products.CMFPlone',
         'collective.formlib.link',
+        'setuptools',
         ],
     entry_points="""
     [z3c.autoinclude.plugin]
