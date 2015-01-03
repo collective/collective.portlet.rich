@@ -1,78 +1,88 @@
 Changelog
+=========
 
-    (name of developer listed in brackets)
 
-collective.portlet.rich - 0.5
+0.5 (unreleased)
+----------------
 
-    Added compatibility IImageScaleTraversable
-    [kroman0] 
+- Added compatibility IImageScaleTraversable
+  [kroman0] 
 
-collective.portlet.rich - 0.4
+
+0.4 (2013-02-21)
 -----------------------------
 
-    Fixed plone41 compatibility.
-    [kroman0]
+- Fixed plone41 compatibility.
+  [kroman0]
 
-collective.portlet.rich - 0.3
------------------------------
 
-    Added missing 0.2 and 0.3 versions changeset entries.
-    [piv]
+0.3 (2009-06-12)
+----------------
 
-    Added scale field to make it possible to have images of different sizes on portlet, before this scale was hardcoded to mini size, added appropriate test.
-    [piv]
+- Added missing 0.2 and 0.3 versions changeset entries.
+  [piv]
 
-    Added danish (da) translation.
-    [tmog]
+- Added scale field to make it possible to have images of different sizes on 
+  portlet, before this scale was hardcoded to mini size, added appropriate test.
+  [piv]
 
-    Added backwards-compatibility to constructor.
-    [mborch]
+- Added danish (da) translation.
+  [tmog]
 
-collective.portlet.rich - 0.2 dev
----------------------------------
+- Added backwards-compatibility to constructor.
+  [mborch]
 
-    Major code cleanup.
-    [mborch]
 
-    Based links-field on collective.formlib.link.
-    [mborch]
-    
-collective.portlet.rich - 0.1
------------------------------
+0.2 (2009-06-12)  
+----------------
 
-    Some code style cleanups and proper use of our own MessageFactory.
-    [hannosch]
+- Major code cleanup.
+  [mborch]
 
-    Added a proper check for text, since its a kupu/wysiwyg field len(text) is not enough
-    [pelle_]
+- Based links-field on collective.formlib.link.
+  [mborch]
 
-    First css / markup shoot - added support for local css and changed portlet markup to 
-    take care of the various list links styles
-    [pelle_]
 
-    Improved the functional test for adding the rich portlet. Now the adding portlet part in the plone 
-    portlet management made straight with the test.browser
-    [pelle_]
+0.1 (2009-06-12)
+----------------
 
-    Links css styles dictionary implemented to make it possible to get various looks for the list of links
-    [pelle_]
+- Some code style cleanups and proper use of our own MessageFactory.
+  [hannosch]
 
-    Change links list into are more *simple* approach - it got a bit confused with 3 separate lists for creating a links list. Lets work further with *one* links list - though this requires that the content provider is more keen on writing up the url "url:title:description"
-    [pelle_]
+- Added a proper check for text, since its a kupu/wysiwyg field len(text) is not enough
+  [pelle_]
 
-    Separate read / more url for portlet header / footer
-    [pelle_]
+- First css / markup shoot - added support for local css and changed portlet markup to 
+  take care of the various list links styles
+  [pelle_]
 
-    Cleaning up to get the copied stuff from plone.portlet.static to work inside plone.portlet.static
-    [pelle_]
+- Improved the functional test for adding the rich portlet. Now the adding 
+  portlet part in the plone portlet management made straight with the test.browser
+  [pelle_]
 
-    Org. files from the wysiwyg branch of plone.portlet.static
-    We are especially interested in the wysiwyg text filed though this requires a
-    special branch of plone.app.form.
-    
-    https://svn.plone.org/svn/plone/plone.portlet.static/branches/plip184-plone3.1/plone/portlet/static/static.py    
-    https://svn.plone.org/svn/plone/plone.app.form/branches/plip200-kupu-widget
-    [pelle_]
+- Links css styles dictionary implemented to make it possible to get various 
+  looks for the list of links
+  [pelle_]
 
-    Initial package structure.
-    [zopeskel]
+- Change links list into are more *simple* approach - it got a bit confused 
+  with 3 separate lists for creating a links list. Lets work further with 
+  *one* links list - though this requires that the content provider is more 
+  keen on writing up the url "url:title:description"
+  [pelle_]
+
+- Separate read / more url for portlet header / footer
+  [pelle_]
+
+- Cleaning up to get the copied stuff from plone.portlet.static to work inside plone.portlet.static
+  [pelle_]
+
+- Org. files from the wysiwyg branch of plone.portlet.static
+  We are especially interested in the wysiwyg text filed though this requires a
+  special branch of plone.app.form.
+  
+- https://svn.plone.org/svn/plone/plone.portlet.static/branches/plip184-plone3.1/plone/portlet/static/static.py    
+  https://svn.plone.org/svn/plone/plone.app.form/branches/plip200-kupu-widget
+  [pelle_]
+
+- Initial package structure.
+  [zopeskel]
