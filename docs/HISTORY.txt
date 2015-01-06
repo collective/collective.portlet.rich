@@ -9,7 +9,7 @@ Changelog
   Cfr. https://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-4.0-to-4.1/updating-add-on-products-for-plone-4.1/changing-dependencies-from-plone-to-products.cmfplone
   [WouterVH] 
 
-- Added compatibility IImageScaleTraversable
+- Added compatibility IImageScaleTraversable.
   [kroman0] 
 
 

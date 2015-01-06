@@ -48,4 +48,3 @@ Author
 
 Pelle Krøgholt (original implementation)
 Malthe Borch (cleanup, integration with ``collective.formlib.link``)
-
