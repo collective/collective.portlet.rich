@@ -5,6 +5,9 @@ Changelog
 0.5 (unreleased)
 ----------------
 
+- Add ``MANIFEST.in``
+  [WouterVH] 
+
 - Add ``Products.CMFPlone`` as dependency for Plone4.1+.
   [WouterVH] 
 
